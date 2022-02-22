@@ -1,0 +1,55 @@
+<style>
+    table, th, td {
+  border: 1px solid;
+}
+</style>
+<body onload="GetBankDetails()">
+    <h3>Bank Details</h3>
+<div>
+    <table id="tblAccount">
+        <tr>
+            <th>Id</th>
+            <th>Account Name</th>
+            <th>Account Number</th>
+            <th>Amount</th>
+            <th>Bank Id</th>
+            <th>Bank Name</th>
+            <th>Date</th>
+            <th>Receiver Account Number</th>
+            <th>Receiver Account Name</th>
+            <th>Status</th>
+            <th>Transaction Id</th>
+        </tr>
+    </table>
+</div>
+</body>
+<script src="jquery-3.6.0.min.js"></script>
+<script>
+ function GetBankDetails(){
+    $.ajax({
+   url: "http://localhost:8088/view/transactions", 
+   type: "GET",
+   dataType: "json",
+   success: function (result) {
+      if(result != ""){
+          var Table = "";
+          $("tblAccount tbody").html("");
+          for(var i=0;i<result.length;i++)
+          {
+              
+          Table = Table +"<tr>";
+          Table = Table + "<td>"+result[i].id+"</td><td>"+result[i].accountName+"</td><td>"+result[i].accountNumber+"</td><td>"+result[i].amount+"</td><td>"+result[i].bankId+"</td><td>"+result[i].bankName+"</td><td>"+result[i].date+"</td><td>"+result[i].receiverAccountNumber+"</td><td>"+result[i].receiverAccountName+"</td><td>"+result[i].status+"</td><td>"+result[i].transactionId+"</td>";
+          Table = Table +"</tr>";
+        
+          }
+          $("#tblAccount tbody").append(Table);
+          
+      }
+    },
+    error: function(xhr, status, error) {
+    var err = eval("(" + xhr.responseText + ")");
+    alert(error.message);
+    }
+ }); // ajax call closing
+ }
+</script>
